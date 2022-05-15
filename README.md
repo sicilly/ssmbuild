@@ -550,9 +550,11 @@ public class BookServiceImpl implements BookService {
 
 ### Controller 和 视图层编写
 
+#### 1）查询全部书籍
+
 1、BookController 类编写 
 
-方法一：查询全部书籍
+
 
 ```java
 @Controller
@@ -668,5 +670,117 @@ public class BookController {
            </table>
        </div>
    </div>
+</div>
+```
+
+#### 2）添加书籍
+
+4、BookController 类编写 
+
+```java
+@RequestMapping("/toAddBook")
+public String toAddPaper() {
+   return "addBook";
+}
+
+@RequestMapping("/addBook")
+public String addPaper(Books books) {
+   System.out.println(books);
+   bookService.addBook(books);
+   return "redirect:/book/allBook";
+}
+```
+
+5、添加书籍页面：addBook.jsp
+
+```jsp
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<html>
+<head>
+   <title>新增书籍</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- 引入 Bootstrap -->
+   <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+
+   <div class="row clearfix">
+       <div class="col-md-12 column">
+           <div class="page-header">
+               <h1>
+                   <small>新增书籍</small>
+               </h1>
+           </div>
+       </div>
+   </div>
+   <form action="${pageContext.request.contextPath}/book/addBook" method="post">
+      书籍名称：<input type="text" name="bookName"><br><br><br>
+      书籍数量：<input type="text" name="bookCounts"><br><br><br>
+      书籍详情：<input type="text" name="detail"><br><br><br>
+       <input type="submit" value="添加">
+   </form>
+
+</div>
+```
+
+#### 3）修改书籍
+
+6、BookController 类编写
+
+```java
+@RequestMapping("/toUpdateBook")
+public String toUpdateBook(Model model, int id) {
+   Books books = bookService.queryBookById(id);
+   System.out.println(books);
+   model.addAttribute("book",books );
+   return "updateBook";
+}
+
+@RequestMapping("/updateBook")
+public String updateBook(Model model, Books book) {
+   System.out.println(book);
+   bookService.updateBook(book);
+   Books books = bookService.queryBookById(book.getBookID());
+   model.addAttribute("books", books);
+   return "redirect:/book/allBook";
+}
+```
+
+7、修改书籍页面  updateBook.jsp
+
+```jsp
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+   <title>修改信息</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- 引入 Bootstrap -->
+   <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+
+   <div class="row clearfix">
+       <div class="col-md-12 column">
+           <div class="page-header">
+               <h1>
+                   <small>修改信息</small>
+               </h1>
+           </div>
+       </div>
+   </div>
+
+   <form action="${pageContext.request.contextPath}/book/updateBook" method="post">
+       <input type="hidden" name="bookID" value="${book.getBookID()}"/>
+      书籍名称：<input type="text" name="bookName" value="${book.getBookName()}"/>
+      书籍数量：<input type="text" name="bookCounts" value="${book.getBookCounts()}"/>
+      书籍详情：<input type="text" name="detail" value="${book.getDetail() }"/>
+       <input type="submit" value="提交"/>
+   </form>
+
 </div>
 ```

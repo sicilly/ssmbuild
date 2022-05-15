@@ -41,6 +41,7 @@
                 </thead>
 
                 <tbody>
+<%--                遍历后台传过来的书籍list--%>
                 <c:forEach var="book" items="${requestScope.get('list')}">
                     <tr>
                         <td>${book.getBookID()}</td>
