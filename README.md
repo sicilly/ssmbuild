@@ -798,3 +798,59 @@ public String updateBook(Model model, Books book) {
 }
 ```
 
+#### 5）根据书名查询书籍
+
+allBook.jsp
+
+```jsp
+<div class="col-md-8 column">
+    <form action="${pageContext.request.contextPath}/book/queryBook" method="post" style="float: right">
+        <input type="text" name="queryBookName" class="form-inline" placeholder="请输入要查询的书籍">
+        <input type="submit" value="查询" class="btn btn-primary">
+    </form>
+</div>
+```
+
+BookController.java
+
+```java
+// 根据书名查询书籍
+@RequestMapping("/queryBook")
+public String queryBook(String queryBookName,Model model){
+    Books books = bookService.queryBookByName(queryBookName);
+    List<Books> list= new ArrayList<>();
+    list.add(books);
+    model.addAttribute("list", list);  // 把查到的list传给前端
+    return "allBook";
+}
+```
+
+BookService.java
+
+```java
+//通过书名查询一本书
+Books queryBookByName(String bookName);
+```
+
+BookServiceImpl.java
+
+```java
+public Books queryBookByName(String bookName) { return bookMapper.queryBookByName(bookName); }
+```
+
+BookMapper.java
+
+```java
+// 根据书名查询书
+Books queryBookByName(@Param("bookName") String bookName);
+```
+
+BookMapper.xml
+
+```xml
+<!--    根据书名查Book-->
+<select id="queryBookByName" resultType="Books">
+    select * from ssmbuild.books where bookName=#{bookName}
+</select>
+```
+

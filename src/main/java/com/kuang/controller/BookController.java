@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -63,5 +64,15 @@ public class BookController {   // controller调service层
     public String deleteBook(@PathVariable("bookID") int id) {
         bookService.deleteBookById(id);  // 删除书籍
         return "redirect:/book/allBook"; // 重定向到全部书籍页
+    }
+
+    // 根据书名查询书籍
+    @RequestMapping("/queryBook")
+    public String queryBook(String queryBookName,Model model){
+        Books books = bookService.queryBookByName(queryBookName);
+        List<Books> list= new ArrayList<>();
+        list.add(books);
+        model.addAttribute("list", list);  // 把查到的list传给前端
+        return "allBook";
     }
 }
