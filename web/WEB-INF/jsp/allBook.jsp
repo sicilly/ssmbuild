@@ -47,6 +47,9 @@
                 </thead>
 
                 <tbody>
+                <c:if test="${not empty error}">
+                <div class="alert alert-warning" role="alert">${error}</div>
+                </c:if>
 <%--                遍历后台传过来的书籍list--%>
                 <c:forEach var="book" items="${requestScope.get('list')}">
                     <tr>

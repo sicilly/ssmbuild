@@ -72,6 +72,11 @@ public class BookController {   // controller调service层
         Books books = bookService.queryBookByName(queryBookName);
         List<Books> list= new ArrayList<>();
         list.add(books);
+        // 如果查不到对应书籍，直接返回全部书籍
+        if(books==null){
+            list=bookService.queryAllBook();
+            model.addAttribute("error","未查到");
+        }
         model.addAttribute("list", list);  // 把查到的list传给前端
         return "allBook";
     }
