@@ -11,7 +11,7 @@ public interface BookMapper {
     int addBook(Books book);
 
     //根据id删除一本书
-    int deleteBookById(@Param("bookId") int id);
+    int deleteBookById(@Param("bookID") int id);
 
     //更新一本书
     int updateBook(Books books);

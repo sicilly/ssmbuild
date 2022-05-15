@@ -221,7 +221,7 @@ public interface BookMapper {
     int addBook(Books book);
 
     //根据id删除一个Book
-    int deleteBookById(@Param("bookId") int id);
+    int deleteBookById(@Param("bookID") int id);
 
     //更新Book
     int updateBook(Books books);
@@ -784,3 +784,17 @@ public String updateBook(Model model, Books book) {
 
 </div>
 ```
+
+#### 4）删除书籍
+
+```java
+    // 删除书籍
+    // restful风格
+    @RequestMapping("/del/{bookID}")
+    public String deleteBook(@PathVariable("bookID") int id) {
+        bookService.deleteBookById(id);  // 删除书籍
+        return "redirect:/book/allBook"; // 重定向到全部书籍页
+    }
+}
+```
+
